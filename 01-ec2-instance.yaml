@@ -2,7 +2,7 @@
   hosts: local
   connection: local
   vars:
-    aim: "ami-0220d79f3f480ecf5"
+    ami: "ami-0220d79f3f480ecf5"
     security_group: "sg-0c38430134803699d"
     zone_id: "Z086025214DK5VMINA2N"
     domain_name: "anuragaws.shop"
@@ -19,7 +19,7 @@
         name: "{{item}}"
     loop: "{{instances}}"
     register: ec2_output
-    
+
   - name: print ec2_output
     debug:
       msg: "{{ec2_output}}"
