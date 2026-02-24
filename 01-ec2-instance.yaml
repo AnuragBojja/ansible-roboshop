@@ -23,3 +23,13 @@
   - name: print ec2_output
     debug:
       msg: "{{ec2_output}}"
+  
+  - name: print public ip 
+    debug:
+      msg: "{{item.instances[0].public_ip_address}}"
+    loop: "{{ec2_output.results}}"
+  
+  - name: print private ip 
+    debug:
+      msg: "{{item.instances[0].private_ip_address}}"
+    loop: "{{ec2_output.results}}"
