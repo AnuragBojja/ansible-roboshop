@@ -1,0 +1,25 @@
+- name: create ec2 instance
+  hosts: local
+  connection: local
+  vars:
+    aim: "ami-0220d79f3f480ecf5"
+    security_group: "sg-0c38430134803699d"
+    zone_id: "Z086025214DK5VMINA2N"
+    domain_name: "anuragaws.shop"
+    instances:
+    - mongodb
+  tasks:
+  - name: create ec2 instance
+    amazon.aws.ec2_instance:
+      name: "{{item}}"
+      instance_type: t3.micro
+      security_group: "{{security_group}}"
+      image_id: "{{ami}}"
+      tags:
+        name: "{{item}}"
+    loop: "{{instances}}"
+    register: ec2_output
+    
+  - name: print ec2_output
+    debug:
+      msg: "{{ec2_output}}"
