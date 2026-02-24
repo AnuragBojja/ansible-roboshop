@@ -20,16 +20,27 @@
     loop: "{{instances}}"
     register: ec2_output
 
-  - name: print ec2_output
-    debug:
-      msg: "{{ec2_output}}"
+  # - name: print ec2_output
+  #   debug:
+  #     msg: "{{ec2_output}}"
   
-  - name: print public ip 
-    debug:
-      msg: "{{item.instances[0].public_ip_address}}"
-    loop: "{{ec2_output.results}}"
+  # - name: print public ip 
+  #   debug:
+  #     msg: "{{item.instances[0].public_ip_address}}"
+  #   loop: "{{ec2_output.results}}"
   
-  - name: print private ip 
-    debug:
-      msg: "{{item.instances[0].private_ip_address}}"
+  # - name: print private ip 
+  #   debug:
+  #     msg: "{{item.instances[0].private_ip_address}}"
+  #   loop: "{{ec2_output.results}}"
+  
+  - name: update route 53
+    amazon.aws.route53:
+      state: present
+      zone: "{{domain_name}}"
+      record: "{{item.item}}.{{domain_name}}"
+      type: A
+      ttl: 1
+      value: "{{item.instances[0].private_ip_address}}"
+      overwrite: true
     loop: "{{ec2_output.results}}"
