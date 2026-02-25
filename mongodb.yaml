@@ -16,9 +16,9 @@
     ansible.builtin.service:
       name: mongod
       state: started
-      enable: true
+      enable: yes
   
-  - name: allowing internet
+  - name: allowing remote connections
     ansible.builtin.replace:
         path: /etc/mongod.conf
         regexp: "127.0.0.1"
