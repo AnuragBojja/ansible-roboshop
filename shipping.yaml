@@ -10,6 +10,14 @@
     - maven
     - mysql
   
+  - name: install required python libraries
+    ansible.builtin.pip:
+      executable: pip3.9
+      name: "{{item}}"
+    loop:
+    - PyMySQL
+    - cryptography
+    
   - name: created system cart roboshop
     ansible.builtin.user:
       name: roboshop
