@@ -73,7 +73,7 @@
       login_host: "mongodb.anuragaws.shop"
       eval: "db.myCollection.find({key: 'value'}).count()"
     register: db_result
-    
+
   - name: print mongodb results
     ansible.builtin.debug:
-      msg: {{db_result}}
+      msg: "{{db_result}}"
