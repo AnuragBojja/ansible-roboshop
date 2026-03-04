@@ -74,3 +74,11 @@
   - name: catalouge output 
     ansible.builtin.shell: mongosh --host mongodb.anuragaws.shop </app/db/master-data.js
     when: catalouge_output.stdout | int < 0
+  
+  - name: deamon reload and start catalogue
+    ansible.builtin.systemd_service:
+      name: catalogue
+      enabled: true
+      state: started
+      daemon_reload: true
+      
