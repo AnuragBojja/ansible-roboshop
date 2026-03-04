@@ -43,7 +43,7 @@
   - name: delete defalt nginx configure
     ansible.builtin.file:
       state: absent
-      src: /etc/nginx/nginx.conf
+      path: /etc/nginx/nginx.conf
 
   - name: copy nginx conf 
     ansible.builtin.file:
