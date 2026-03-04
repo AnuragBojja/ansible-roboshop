@@ -72,5 +72,5 @@
     register: catalouge_output
 
   - name: catalouge output 
-    debug:
-      msg: "{{catalouge_output}}" 
+    ansible.builtin.shell: mongosh --host mongodb.anuragaws.shop </app/db/master-data.js
+    when: catalouge_output.stdout | int < 0
