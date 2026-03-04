@@ -35,4 +35,23 @@
       dest: /tmp/frontend.zip
 
   - name: extract frontend files
-  
+    ansible.builtin.unarchive:
+      src: /tmp/frontend.zip
+      dest: /usr/share/nginx/html/
+      remote_src: yes
+
+  - name: delete defalt nginx configure
+    ansible.builtin.file:
+      state: absent
+      src: /etc/nginx/nginx.conf
+
+  - name: copy nginx conf 
+    ansible.builtin.file:
+      src: nginx.conf
+      dest: /etc/nginx/nginx.conf
+
+  - name: restart nginx
+    ansible.builtin.service:
+      name: nginx
+      state: restart
+      enable: yes
