@@ -23,29 +23,29 @@
 
   - name: delete directory /app
     ansible.builtin.file:
-    path: /app
-    state: absent
+      path: /app
+      state: absent
 
   - name: create directory /app
     ansible.builtin.file:
-    path: /app
-    state: directory
+      path: /app
+      state: directory
 
   - name: delete catalogue files
     ansible.builtin.file:
-    path: /tmp/catalogue.zip
-    state: absent
+      path: /tmp/catalogue.zip
+      state: absent
 
   - name: download catalouge files
     ansible.builtin.get_url:
-    url: https://roboshop-artifacts.s3.amazonaws.com/catalogue-v3.zip
-    dest: /tmp/catalogue.zip
+      url: https://roboshop-artifacts.s3.amazonaws.com/catalogue-v3.zip
+      dest: /tmp/catalogue.zip
 
   - name: unzip catalogue
     ansible.builtin.unarchive:
-    src: /tmp/catalogue.zip
-    dest: /app
-    remote_src: yes
+      src: /tmp/catalogue.zip
+      dest: /app
+      remote_src: yes
   
   - name: download dependancies
     community.general.npm:
@@ -66,4 +66,11 @@
       name: mongodb-mongosh
       state: present
   
-  
+
+  # - name: check database table exiest or not
+  #   community.mongodb.mongodb_shell:
+  #     db: myDatabase
+  #     login_user: admin
+  #     login_password: password
+  #     eval: "db.myCollection.find({key: 'value'}).count()"
+  #   register: db_result
