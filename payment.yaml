@@ -1,0 +1,65 @@
+- name: setup shipping
+  hosts: shipping
+  become: yes
+  tasks:
+  - name: install maven 
+    ansible.builtin.dnf:
+      name: "{{item}}"
+      state: present
+    loop:
+    - python3
+    - gcc
+    - python3-devel
+  
+  - name: created system payment roboshop
+    ansible.builtin.user:
+      name: roboshop
+      system: yes
+      shell: /sbin/nologin
+      comment: "roboshop system cart"
+      home: /app
+
+  - name: delete directory /app
+    ansible.builtin.file:
+      path: /app
+      state: absent
+
+  - name: create directory /app
+    ansible.builtin.file:
+      path: /app
+      state: directory
+
+  - name: delete shipping files
+    ansible.builtin.file:
+      path: /tmp/payment.zip
+      state: absent
+
+  - name: download cart files
+    ansible.builtin.get_url:
+      url: https://roboshop-artifacts.s3.amazonaws.com/payment-v3.zip
+      dest: /tmp/payment.zip
+
+  - name: unzip payment
+    ansible.builtin.unarchive:
+      src: /tmp/payment.zip
+      dest: /app
+      remote_src: yes
+  
+  - name: install dependancies
+    ansible.builtin.pip:
+      requirements: requirements.txt
+      executable: pip3.9
+    args:
+      chdir: /app
+
+  - name: copy shipping service files
+    ansible.builtin.copy:
+      src: payment.service
+      dest: /etc/systemd/system/payment.service
+
+  - name: deamon reload and start shipping
+    ansible.builtin.systemd_service:
+      name: shipping
+      enabled: true
+      state: started
+      daemon_reload: true

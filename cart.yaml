@@ -1,4 +1,4 @@
-- name: set up catalouge
+- name: set up cart
   hosts: cart
   become: yes
   tasks:
