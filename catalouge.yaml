@@ -71,7 +71,7 @@
     ansible.builtin.command: mongosh --host mongodb.anuragaws.shop --quiet --eval "db.getMongo().getDBNames().indexOf('catalogue')"
     register: catalouge_output
 
-  - name: catalouge output 
+  - name: load database 
     ansible.builtin.shell: mongosh --host mongodb.anuragaws.shop </app/db/master-data.js
     when: catalouge_output.stdout | int < 0
   
@@ -81,4 +81,3 @@
       enabled: true
       state: started
       daemon_reload: true
-      
