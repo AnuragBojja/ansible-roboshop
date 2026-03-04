@@ -67,10 +67,13 @@
       state: present
   
 
-  # - name: check database table exiest or not
-  #   community.mongodb.mongodb_shell:
-  #     db: myDatabase
-  #     login_user: admin
-  #     login_password: password
-  #     eval: "db.myCollection.find({key: 'value'}).count()"
-  #   register: db_result
+  - name: check database table exiest or not
+    community.mongodb.mongodb_shell:
+      db: admin
+      login_host: "mongodb.anuragaws.shop"
+      eval: "db.myCollection.find({key: 'value'}).count()"
+    register: db_result
+    
+  - name: print mongodb results
+    ansible.builtin.debug:
+      msg: {{db_result}}
