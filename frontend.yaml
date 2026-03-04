@@ -22,12 +22,12 @@
   - name: remove html directory
     ansible.builtin.file:
       state: absent
-      src: /usr/share/nginx/html/
+      path: /usr/share/nginx/html/
 
   - name: create html directory
     ansible.builtin.file:
       state: directory
-      src: /usr/share/nginx/html/
+      path: /usr/share/nginx/html/
   
   - name: download frontend files
     ansible.builtin.get_url:

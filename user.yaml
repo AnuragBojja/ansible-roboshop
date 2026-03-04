@@ -1,5 +1,4 @@
-- name: set up catalouge
-  hosts: user
+- name: set up user 
   become: yes
   tasks:
   - name: disable nodejs modules

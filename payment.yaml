@@ -1,4 +1,4 @@
-- name: setup shipping
+- name: setup payment 
   hosts: payment
   become: yes
   tasks:
@@ -16,7 +16,7 @@
       name: roboshop
       system: yes
       shell: /sbin/nologin
-      comment: "roboshop system cart"
+      comment: "roboshop system payment"
       home: /app
 
   - name: delete directory /app
@@ -29,12 +29,12 @@
       path: /app
       state: directory
 
-  - name: delete shipping files
+  - name: delete payment files
     ansible.builtin.file:
       path: /tmp/payment.zip
       state: absent
 
-  - name: download cart files
+  - name: download payment files
     ansible.builtin.get_url:
       url: https://roboshop-artifacts.s3.amazonaws.com/payment-v3.zip
       dest: /tmp/payment.zip
@@ -52,14 +52,14 @@
     args:
       chdir: /app
 
-  - name: copy shipping service files
+  - name: copy payment service files
     ansible.builtin.copy:
       src: payment.service
       dest: /etc/systemd/system/payment.service
 
   - name: deamon reload and start shipping
     ansible.builtin.systemd_service:
-      name: shipping
+      name: payment
       enabled: true
       state: started
       daemon_reload: true
