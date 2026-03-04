@@ -68,12 +68,9 @@
   
 
   - name: check database table exiest or not
-    community.mongodb.mongodb_shell:
-      db: admin
-      login_host: "mongodb.anuragaws.shop"
-      eval: "db.myCollection.find({key: 'value'}).count()"
-    register: db_result
+    ansible.builtin.command: mongosh --host mongodb.anuragaws.shop --quiet --eval "db.getMongo().getDBNames().indexOf('catalogue')"
+    register: catalouge_output
 
-  - name: print mongodb results
-    ansible.builtin.debug:
-      msg: "{{db_result}}"
+  - name: catalouge output 
+    debug:
+      msg: "{{catalouge_output}}" 
