@@ -1,0 +1,69 @@
+- name: set up catalouge
+  hosts: catalouge
+  become: yes
+  tasks:
+  - name: disable nodejs modules
+    ansible.builtin.command: dnf module disable nodejs -y
+  
+  - name: enable nodejs:20 modules
+    ansible.builtin.command: dnf module enable nodejs:20 -y
+  
+  - name: Install NodeJS
+    ansible.builtin.dnf:
+      name: nodejs
+      state: present
+  
+  - name: created system user roboshop
+    ansible.builtin.user:
+      name: roboshop
+      system: yes
+      shell: /sbin/nologin
+      comment: "roboshop system user"
+      home: /app
+
+  - name: delete directory /app
+    ansible.builtin.file:
+    path: /app
+    state: absent
+
+  - name: create directory /app
+    ansible.builtin.file:
+    path: /app
+    state: directory
+
+  - name: delete catalogue files
+    ansible.builtin.file:
+    path: /tmp/catalogue.zip
+    state: absent
+
+  - name: download catalouge files
+    ansible.builtin.get_url:
+    url: https://roboshop-artifacts.s3.amazonaws.com/catalogue-v3.zip
+    dest: /tmp/catalogue.zip
+
+  - name: unzip catalogue
+    ansible.builtin.unarchive:
+    src: /tmp/catalogue.zip
+    dest: /app
+    remote_src: yes
+  
+  - name: download dependancies
+    community.general.npm:
+      path: /app
+  
+  - name: copy catalogue service files
+    ansible.builtin.copy:
+      src: catalogue.service
+      dest: /etc/systemd/system/catalogue.service
+  
+  - name: copy mongo.repo file
+    ansible.builtin.copy:
+      src: mongo.repo
+      dest: /etc/yum.repos.d/mongo.repo
+  
+  - name: install mongodb client
+    ansible.builtin.dnf:
+      name: mongodb-mongosh
+      state: present
+  
+  

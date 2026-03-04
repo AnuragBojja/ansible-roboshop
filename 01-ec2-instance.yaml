@@ -6,11 +6,11 @@
     security_group: "sg-0c38430134803699d"
     zone_id: "Z086025214DK5VMINA2N"
     domain_name: "anuragaws.shop"
-    instances:
-    - mongodb
-    - redis
-    - mysql
-    - rabbitmq
+    # instances:
+    # - mongodb
+    # - redis
+    # - mysql
+    # - rabbitmq
   tasks:
   - name: create ec2 instance
     amazon.aws.ec2_instance:
