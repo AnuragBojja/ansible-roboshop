@@ -18,9 +18,7 @@
       state: started
       enabled: yes 
 
-  - name: |-
-      Add user to server and assign full access control on / vhost.
-      The user doesn't have permission rules for other vhosts
+  - name: setup rabbitmq user
     community.rabbitmq.rabbitmq_user:
       user: roboshop
       password: roboshop123
